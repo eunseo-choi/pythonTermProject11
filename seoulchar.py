@@ -268,7 +268,7 @@ class MainGUI:
         self.MailButton3.pack()
         self.MailButton3.place(x=300, y=20, width=40, height=40)
         self.mapimage3 = PhotoImage(file="map.png")
-        self.MapButton3 = Button(self.frame3, image=self.mapimage3,command=self.mapMain3)
+        self.MapButton3 = Button(self.frame3, image=self.mapimage3,command=self.mapMain1)
         self.MapButton3.pack()
         self.MapButton3.place(x=350, y=20, width=40, height=40)
         self.favimage3 = PhotoImage(file="star.png")
@@ -360,12 +360,12 @@ class MainGUI:
         self.recipientAddr = "dmstj200085@naver.com"
 
         self.msg = MIMEBase("multipart", "alternative")
-        self.msg['Subject'] = "전기차 충전소 정보"
+        self.msg['Subject'] = "전기차 충전소/주유소/나눔카 정보"
         self.msg['From'] = self.senderAddr
         self.msg['To'] = self.recipientAddr
 
-        self.text = ",".join(self.textlist)
-        self.HtmlPart = MIMEText(self.text,'plain')
+        self.text = "\n".join(self.textlist)
+        self.HtmlPart = MIMEText(self.text, 'plain')
         self.msg.attach(self.HtmlPart)
 
         self.s = mysmtplib.MySMTP(self.host, self.port)
@@ -405,40 +405,6 @@ class MainGUI:
             folium.Marker([markerx, markery], popup=popup).add_to(m)
         # html 파일로 저장
         m.save('map.html')
-        thread = threading.Thread(target=showMap, args=(frame,))
-        thread.daemon = True
-        thread.start()
-        window2.mainloop()
-
-    def mapMain3(self):
-        import threading
-        import sys
-        import folium
-        from cefpython3 import cefpython as cef
-        def showMap(frame):
-            sys.excepthook = cef.ExceptHook
-            window_info = cef.WindowInfo(frame.winfo_id())
-            window_info.SetAsChild(frame.winfo_id(), [0, 0, 800, 600])
-            cef.Initialize()
-            browser = cef.CreateBrowserSync(window_info, url='file:///map3.html')
-            cef.MessageLoop()
-        window2 = Tk()
-        frame = Frame(window2, width=800, height=600)
-        frame.pack()
-
-        # 지도 저장
-        # 위도 경도 지정
-        locationx = self.locationxlist[0]
-        locationy = self.locationylist[0]
-        m3 = folium.Map(location=[locationx, locationy], zoom_start=15)
-        # 마커 지정
-        for i in range(len(self.locationylist)):
-            markerx = self.locationxlist[i]
-            markery = self.locationylist[i]
-            popup = self.namelist[i]
-            folium.Marker([markerx, markery], popup=popup).add_to(m3)
-        # html 파일로 저장
-        m3.save('map3.html')
         thread = threading.Thread(target=showMap, args=(frame,))
         thread.daemon = True
         thread.start()
