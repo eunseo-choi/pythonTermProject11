@@ -143,7 +143,9 @@ class MainGUI:
                     self.RenderText.insert(INSERT, ChdataList[i][2])
                     self.RenderText.insert(INSERT, "\n")
                     self.RenderText.insert(INSERT, "\n")
-                    self.textlist.append(" 주소 : " + ChdataList[i][0] + " 충전기 타입 : " + ChdataList[i][1] + " 충전기 상태 : " + ChdataList[i][2])
+                    self.text = " 주소 : " + ChdataList[i][0] + " | 충전기 타입 : " + ChdataList[i][1] + " | 충전기 상태 : " + ChdataList[i][2]
+                    self.textlist.append(self.text)
+
 
 
 
@@ -246,8 +248,8 @@ class MainGUI:
                     self.RenderText2.insert(INSERT, GasdataList[i][3])
                     self.RenderText2.insert(INSERT, "\n")
                     self.RenderText2.insert(INSERT, "\n")
-                    self.textlist.append(
-                        " 시설명 : " + GasdataList[i][0] + " 주소 : " + GasdataList[i][1] + " 전화번호 : " + GasdataList[i][2]+ " 영업상태 : " + GasdataList[i][3])
+                    self.text = " 시설명 : " + GasdataList[i][0] + " | 주소 : " + GasdataList[i][1] + " | 전화번호 : " + GasdataList[i][2]+ " | 영업상태 : " + GasdataList[i][3]
+                    self.textlist.append(self.text)
 
     def InitNanumCar(self):
         self.style3 = ttk.Style()
@@ -344,8 +346,8 @@ class MainGUI:
                     self.RenderText3.insert(INSERT, NanumdataList[i][2])
                     self.RenderText3.insert(INSERT, "\n")
                     self.RenderText3.insert(INSERT, "\n")
-                    self.textlist.append(
-                        " 거점명 : " + NanumdataList[i][0] + " 주소 : " + NanumdataList[i][1] + " 전기차 여부 : " + NanumdataList[i][2])
+                    self.text = " 거점명 : " + NanumdataList[i][0] + " | 주소 : " + NanumdataList[i][1] + " | 전기차 여부 : " + NanumdataList[i][2]
+                    self.textlist.append(self.text)
 
     def sendMain1(self):
         import mimetypes
@@ -358,12 +360,11 @@ class MainGUI:
         self.recipientAddr = "dmstj200085@naver.com"
 
         self.msg = MIMEBase("multipart", "alternative")
-        self.msg['Subject'] = "Test email in Python 3.0"
+        self.msg['Subject'] = "전기차 충전소 정보"
         self.msg['From'] = self.senderAddr
         self.msg['To'] = self.recipientAddr
 
-
-        self.text = str(self.textlist)
+        self.text = ",".join(self.textlist)
         self.HtmlPart = MIMEText(self.text,'plain')
         self.msg.attach(self.HtmlPart)
 
